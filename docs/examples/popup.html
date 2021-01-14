@@ -52,17 +52,17 @@
         var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-            map = new L.Map('map', {center: new L.LatLng(29.9792, 31.1344), zoom: 15}),
-            drawnItems = L.featureGroup().addTo(map);
+            mymap = new L.Map('map', {center: new L.LatLng(29.9792, 31.1344), zoom: 15}),
+            drawnItems = L.featureGroup().addTo(mymap);
 
         L.control.layers({
-            "osm": osm.addTo(map),
+            "osm": osm.addTo(mymap),
             "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
                 attribution: 'google'
             })
-        }, {'drawlayer':drawnItems}, { position: 'topright', collapsed: false }).addTo(map);
+        }, {'drawlayer':drawnItems}, { position: 'topright', collapsed: false }).addTo(mymap);
 
-        map.addControl(new L.Control.Draw({
+        mymap.addControl(new L.Control.Draw({
             edit: {
                 featureGroup: drawnItems,
                 poly : {
@@ -120,7 +120,7 @@
         };
 
         // Object created - bind popup to layer, add to feature group
-        map.on(L.Draw.Event.CREATED, function(event) {
+        mymap.on(L.Draw.Event.CREATED, function(event) {
             var layer = event.layer;
             var content = getPopupContent(layer);
             if (content !== null) {
@@ -130,7 +130,7 @@
         });
 
         // Object(s) edited - update popups
-        map.on(L.Draw.Event.EDITED, function(event) {
+        mymap.on(L.Draw.Event.EDITED, function(event) {
             var layers = event.layers,
                 content = null;
             layers.eachLayer(function(layer) {
